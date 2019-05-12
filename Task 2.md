@@ -127,4 +127,6 @@ r/R 原始字符串 - 原始字符串：所有的字符串都是直接按照字�
 >>> 'growth rate: %d %%' % 7
 'growth rate: 7 %'
 ```
-
+  
+### 参考文献
+https://www.runoob.com/python/python-strings.html
