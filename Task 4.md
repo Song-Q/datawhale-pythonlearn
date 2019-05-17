@@ -28,7 +28,8 @@ B （Built-in） 内置作用域（内置函数所在模块的范围）
 ### 4.函数返回值
 如果没有return语句，函数执行完毕后也会返回结果，只是结果为None。return None可以简写为return。  
 如果有必要，可以先对参数的数据类型做检查；函数体内部可以用return随时返回函数结果；函数执行完毕也没有return语句时，自动return None。  
-函数可以同时返回多个值，但其实就是一个tuple
+函数可以同时返回多个值，但其实就是一个tuple。  
+函数的相关知识可参考：https://www.runoob.com/python3/python3-function.html
 ### 5.file
 #### 打开文件方式（读写两种方式）
 #### 读文件
@@ -37,17 +38,84 @@ B （Built-in） 内置作用域（内置函数所在模块的范围）
 >>> f = open('/Users/michael/test.txt', 'r')
 ```
 如果文件不存在，open()函数就会抛出一个IOError的错误。  
+
+#### 写文件
+写文件和读文件是一样的，唯一区别是调用open()函数时，传入标识符'w'或者'wb'表示写文本文件或写二进制文件：
+```python
+>>> f = open('/Users/michael/test.txt', 'w')
+>>> f.write('Hello, world!')
+>>> f.close()
+```
+
+#### 文件对象的操作方法
 如果文件打开成功，接下来，调用read()方法可以一次读取文件的全部内容，Python 把内容读到内存，用一个str对象表示：
 ```python
 >>> f = read()
 'Hello, world!'
 ```
-调用close()方法关闭文件。文件使用完毕后必须关闭，因为文件对象会占用操作系统的资源，并且操作系统同一时间能打开的文件数量也是有限的：
+要保险起见，可以反复调用read(size)方法，每次最多读取size 个字节的内容。另外，调用readline()可以每次读取一行内容，调用readlines()一次读取所有内容并按行返回list。  
+调用close()方法关闭文件。文件使用完毕后必须关闭，因为文件对象会占用操作系统的资源，并且操作系统同一时间能打开的文件数量也是有限的：  
 ```python
 >>> f.close()
 ```
-
-#### 文件对象的操作方法
+Python 引入了with语句来自动帮我们调用close()方法：
+```python
+with open('/path/to/file', 'r') as f:
+print(f.read())
+```
 #### 学习对excel及csv文件进行操作
+1.读写csv文件
+```python
+import csv
+
+#读取csv文件内容方法1
+csv_file = csv.reader(open('testdata.csv','r'))
+next(csv_file, None)    #skip the headers
+for user in csv_file:
+    print(user)
+
+#读取csv文件内容方法2
+with open('testdata.csv', 'r') as csv_file:
+    reader = csv.reader(csv_file)
+    next(csv_file, None)
+    for user in reader:
+        print(user)
+
+#从字典写入csv文件
+dic = {'fengju':25, 'wuxia':26}
+csv_file = open('testdata1.csv', 'w', newline='')
+writer = csv.writer(csv_file)
+for key in dic:
+    writer.writerow([key, dic[key]])
+csv_file.close()   #close CSV file
+
+csv_file1 = csv.reader(open('testdata1.csv','r'))
+for user in csv_file1:
+    print(user)
+```
+2.读写excel文件
+import xlrd, xlwt   #xlwt只能写入xls文件
+
+#读取xlsx文件内容
+rows = []   #create an empty list to store rows
+book = xlrd.open_workbook('testdata.xlsx')  #open the Excel spreadsheet as workbook
+sheet = book.sheet_by_index(0)    #get the first sheet
+for user in range(1, sheet.nrows):  #iterate 1 to maxrows
+    rows.append(list(sheet.row_values(user, 0, sheet.ncols)))  #iterate through the sheet and get data from rows in list
+print(rows)
+
+#写入xls文件
+```python
+rows1 = [['Name', 'Age'],['fengju', '26'],['wuxia', '25']]
+book1 = xlwt.Workbook()   #create new book1 excle
+sheet1 = book1.add_sheet('user')   #create new sheet
+for i in range(0, 3):    
+    for j in range(0, len(rows1[i])):
+        sheet1.write(i, j, rows1[i][j])
+book1.save('testdata1.xls')   #sava as testdata1.xls
+```
 ### 6.os模块
+要在Python 程序中执行目录和文件的操作只是简单地调用了操作系统提供的接口函数，Python 内置的os模块可以直接调用操作系统提供的接口函数。  
+各类os模块的方法请见：https://www.runoob.com/python3/python3-os-file-methods.html
 ### 7.datetime模块
+datetime模块重新封装了time模块，提供更多接口，提供的类有：date,time,datetime,timedelta,tzinfo。
