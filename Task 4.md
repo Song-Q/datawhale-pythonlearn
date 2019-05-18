@@ -61,7 +61,11 @@ B （Built-in） 内置作用域（内置函数所在模块的范围）
 Python 引入了with语句来自动帮我们调用close()方法：
 ```python
 with open('/path/to/file', 'r') as f:
-print(f.read())
+    print(f.read())
+```
+要读取二进制文件，比如图片、视频等等，用'rb'模式打开文件即可：
+```python
+>>> f = open('/Users/michael/test.jpg', 'rb')
 ```
 #### 学习对excel及csv文件进行操作
 1.读写csv文件
@@ -116,6 +120,39 @@ book1.save('testdata1.xls')   #sava as testdata1.xls
 ```
 ### 6.os模块
 要在Python 程序中执行目录和文件的操作只是简单地调用了操作系统提供的接口函数，Python 内置的os模块可以直接调用操作系统提供的接口函数。  
+```python
+>>> import os
+>>> os.name # 操作系统类型
+nt
+```
+查看当前目录的绝对路径:
+```python
+>>> os.path.abspath('.')
+'C:\\Users\\SongQ'
+```
+在某个目录下创建一个新目录，首先把新目录的完整路径表示出来:
+```python
+>>> os.path.join('/Users/SongQ','testdir')
+'/Users/SongQ\\testdir'
+```
+然后创建一个目录:
+```python
+>>> os.mkdir('/Users/SongQ/testdir')
+```
+删掉一个目录:  
+```python
+>>> os.rmdir('/Users/SongQ/testdir')
+```
+os.path.split()函数，这样可以把一个路径拆分为两部分，后一部分总是最后级别的目录或文件名：
+```python
+>>> os.path.split('/Users/SongQ/testdir/file.txt')
+('/Users/SongQ/testdir', 'file.txt')
+```
+os.path.splitext()可以直接让你得到文件扩展名，很多时候非常方便：
+```python
+>>> os.path.splitext('/Users/SongQ/testdir/file.txt')
+('/Users/SongQ/testdir/file', '.txt')
+```
 各类os模块的方法请见：https://www.runoob.com/python3/python3-os-file-methods.html
 ### 7.datetime模块
 datetime模块重新封装了time模块，提供更多接口，提供的类有：date,time,datetime,timedelta,tzinfo。
