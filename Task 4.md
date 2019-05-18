@@ -98,6 +98,7 @@ for user in csv_file1:
     print(user)
 ```
 2.读写excel文件
+```python
 import xlrd, xlwt   #xlwt只能写入xls文件
 
 #读取xlsx文件内容
@@ -109,7 +110,7 @@ for user in range(1, sheet.nrows):  #iterate 1 to maxrows
 print(rows)
 
 #写入xls文件
-```python
+
 rows1 = [['Name', 'Age'],['fengju', '26'],['wuxia', '25']]
 book1 = xlwt.Workbook()   #create new book1 excle
 sheet1 = book1.add_sheet('user')   #create new sheet
@@ -155,4 +156,52 @@ os.path.splitext()可以直接让你得到文件扩展名，很多时候非常�
 ```
 各类os模块的方法请见：https://www.runoob.com/python3/python3-os-file-methods.html
 ### 7.datetime模块
-datetime模块重新封装了time模块，提供更多接口，提供的类有：date,time,datetime,timedelta,tzinfo。
+datetime模块提供了处理日期和时间的类，既有简单的方式，又有复杂的方式。它虽然支持日期和时间算法，但其实现的重点是为输出格式化和操作提供高效的属性提取功能。datetime模块重新封装了time模块，提供更多接口，提供的类有：date,time,datetime,timedelta,tzinfo。  
+
+类名称 |描述 |  
+---- |----- |  
+datetime.date |表示日期，常用的属性有：year, month和day |  
+datetime.time |表示时间，常用属性有：hour, minute, second, microsecond|  
+datetime.datetime |表示日期时间|  
+datetime.timedelta |表示两个date、time、datetime实例之间的时间间隔，分辨率（最小单位）可达到微秒 |  
+datetime.tzinfo |时区相关信息对象的抽象基类。它们由datetime和time类使用，以提供自定义时间的而调整。 |  
+datetime.timezone |实现tzinfo抽象基类的类，表示与UTC的固定偏移量 |  
+
+#### datetime.datetime类
+
+类名称 |描述 |  
+---- |----- |  
+datetime.today() |返回一个表示当前本期日期时间的datetime对象 |  
+datetime.now([tz]) |表示时间，常用属性有：hour, minute, second, microsecond|  
+datetime.utcnow() |返回当前utc日期时间的datetime对象 |  
+
+
+对象名称 |描述 |  
+---- |----- |  
+dt.year, dt.month, dt.day |年、月、日 |  
+dt.hour, dt.minute, dt.second |时、分、秒|  
+dt.microsecond, dt.tzinfo |返回当前utc日期时间的datetime对象 |  
+dt.date() |获取datetime对象对应的date对象 |  
+dt.time() |获取datetime对象对应的time对象 |  
+dt.replace([year[, month[, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]]]]]) |生成并返回一个新的datetime对象，如果所有参数都没有指定，则返回一个与原datetime对象相同的对象 |  
+dt.ctime() |等价于time模块的time.ctime(time.mktime(d.timetuple())) |
+dt.strftime(format) |返回指定格式的时间字符串 |  
+```python
+>>> from datetime import datetime
+>>> datetime.today()
+datetime.datetime(2019, 5, 18, 15, 31, 55, 793257)
+>>> datetime.now()
+datetime.datetime(2019, 5, 18, 15, 34, 11, 991496)
+>>> datetime.utcnow()
+datetime.datetime(2019, 5, 18, 7, 35, 50, 137328)
+>>> dt = datetime.now()
+>>> dt.year
+2019
+>>> dt.second
+53
+>>> dt.ctime()
+'Sat May 18 15:38:53 2019'
+>>> dt.strftime('%Y%m%d %H:%M:%S.%f')
+'20190518 15:38:53.701638'
+```
+其他未列出的类方法、对象方法请参考：https://blog.csdn.net/gty931008/article/details/80254806
