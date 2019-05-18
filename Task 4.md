@@ -204,4 +204,4 @@ datetime.datetime(2019, 5, 18, 7, 35, 50, 137328)
 >>> dt.strftime('%Y%m%d %H:%M:%S.%f')
 '20190518 15:38:53.701638'
 ```
-其他未列出的类方法、对象方法请参考：https://blog.csdn.net/gty931008/article/details/80254806
+其他未列出的类方法、对象方法请参考：https://blog.csdn.net/gty931008/article/details/80254806  ；https://www.cnblogs.com/tkqasn/p/6001134.html
