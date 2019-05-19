@@ -67,6 +67,82 @@ class Student(object):
 >>> bart.print_score()
 Bart Simpson: 59
 ```
+如果要让内部属性不被外部访问，可以把属性的名称前加上两个下划线__，在Python 中，实例的变量名如果以__开头，就变成了一个私有变量（private），只有内部可以访问，外部不能访问。  
+若外部代码要获取name 和score，则可以给Student 类增加get_name和get_score这样的方法。  
+若要允许外部代码修改score，则可以再给Student 类增加set_score方法，所以，我们把Student类改一改：
+```python
+class Student(object):
+    def __init__(self, name, score):
+        self.__name = name
+        self.__score = score
+    def print_score(self):
+        print('%s: %s' %(self.__name, self.__score))
+    def get_name(self):
+        return self.__name
+    def get_score(self):
+        return self.__score
+    def set_score(self, score):
+        self.__score = score        
+```
+```python
+>>> bart = Student('Bart Simpson', 60)
+>>> bart.__name
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Student' object has no attribute '__name'
+>>> bart.get_score()
+60
+>>> bart.set_score(80)
+>>> bart.get_score()
+80
+```
+#### 继承和多态
+当我们定义一个class 的时候，可以从某个现有的class 继承，新的class 称为子类（Subclass），而被继承的class 称为基类、父类或超类（Base class、Super class）。继承最大的好处是子类获得了父类的全部功能。  
+继承的第二个好处需要我们对代码做一点改进。当run()的时候，显示的是Animal is running...，符合逻辑的做法是显示Dog is running...
+```python
+class Animal(object):
+    def run(self):
+        print('Animal is running...')
+
+class Dog(Animal):
+    def run(self):
+        print('Dog is running...')
+    def eat(self):
+        print('Eating meat...')
+```
+```python
+>>>dog = Dog()
+>>>dog.run()
+Dog is running...
+```
+
+当子类和父类都存在相同的run()方法时，我们说，子类的run()覆盖了父类的run()，在代码运行的时候，总是会调用子类的run()。这样，我们就获得了继承的另一个好处：多态。
+```python
+>>>a = list() # a是list类型
+>>>b = Animal() # b是Animal类型
+>>>c = Dog() # c是Dog类型
+>>> isinstance(c, Dog)
+True
+>>> isinstance(c, Animal)
+True
+```
+
+对于一个变量，我们只需要知道它是Animal类型，无需确切地知道它的子类型，就可以放心地调用run()方法，而具体调用的run()方法是作用在Animal、Dog、Cat还是Tortoise对象上，由运行时该对象的确切类型决定，这就是多态真正的威力：调用方只管调用，不管细节，而当我们新增一种Animal的子类时，只要确保run()方法编写正确，不用管原来的代码是如何调用的。这就是著名的“开闭”原则：  
+对扩展开放：允许新增Animal子类；  
+对修改封闭：不需要修改依赖Animal类型的run_twice()等函数。
+```python
+def run_twice(animal):
+    animal.run()
+    animal.run()
+class Tortoise(Animal):
+    def run(self):
+        print('Tortoise is running slowly...')
+```
+```python
+>>> run_twice(Tortoise())
+Tortoise is running slowly...
+Tortoise is running slowly...
+```
 ### 2.正则表达式
 
 ### 3.re模块
